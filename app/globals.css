@@ -1,0 +1,178 @@
+@import "dockview/dist/styles/dockview.css";
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-head: var(--font-head);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --radius: var(--radius);
+
+  /* Neobrutalismus: harte Offset-Schatten */
+  --shadow-xs: 1px 1px 0 0 var(--border);
+  --shadow-sm: 2px 2px 0 0 var(--border);
+  --shadow: 3px 3px 0 0 var(--border);
+  --shadow-md: 4px 4px 0 0 var(--border);
+  --shadow-lg: 6px 6px 0 0 var(--border);
+  --shadow-xl: 10px 10px 0 1px var(--border);
+  --shadow-2xl: 16px 16px 0 1px var(--border);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  --radius: 0;
+  --background: #fff7e8;
+  --foreground: #000;
+  --card: #fff;
+  --card-foreground: #000;
+  --popover: #fff;
+  --popover-foreground: #000;
+  --primary: #ffdc58;
+  --primary-hover: #ffd12e;
+  --primary-foreground: #000;
+  --secondary: #000;
+  --secondary-foreground: #fff;
+  --muted: #efe7d6;
+  --muted-foreground: #6b6355;
+  --accent: #ffe7a3;
+  --accent-foreground: #000;
+  --destructive: #e63946;
+  --destructive-foreground: #fff;
+  --border: #000;
+  --input: #fff;
+  --ring: #000;
+}
+
+.dark {
+  --background: #1a1815;
+  --foreground: #f5f0e6;
+  --card: #262320;
+  --card-foreground: #f5f0e6;
+  --popover: #262320;
+  --popover-foreground: #f5f0e6;
+  --primary: #ffdc58;
+  --primary-hover: #ffd12e;
+  --primary-foreground: #000;
+  --secondary: #3a352f;
+  --secondary-foreground: #f5f0e6;
+  --muted: #2e2a24;
+  --muted-foreground: #b3ac9e;
+  --accent: #38342b;
+  --accent-foreground: #f5f0e6;
+  --destructive: #ff6b6b;
+  --destructive-foreground: #1a1815;
+  --border: #000;
+  --input: #262320;
+  --ring: #ffdc58;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* ---- dockview im Neobrutalismus-Look ---- */
+.slab-dock {
+  --dv-background-color: var(--background);
+  --dv-group-view-background-color: var(--card);
+  --dv-tabs-and-actions-container-background-color: var(--card);
+  --dv-activegroup-visiblepanel-tab-background-color: var(--primary);
+  --dv-activegroup-visiblepanel-tab-color: var(--primary-foreground);
+  --dv-activegroup-hiddenpanel-tab-background-color: var(--card);
+  --dv-activegroup-hiddenpanel-tab-color: var(--muted-foreground);
+  --dv-inactivegroup-visiblepanel-tab-background-color: var(--card);
+  --dv-inactivegroup-visiblepanel-tab-color: var(--foreground);
+  --dv-inactivegroup-hiddenpanel-tab-background-color: var(--card);
+  --dv-inactivegroup-hiddenpanel-tab-color: var(--muted-foreground);
+  --dv-tab-divider-color: var(--border);
+  --dv-separator-border: var(--border);
+  --dv-paneview-header-border-color: var(--border);
+  --dv-drag-over-background-color: color-mix(in srgb, var(--primary) 25%, transparent);
+  --dv-drag-over-border-color: var(--primary);
+  --dv-floating-box-shadow: 8px 8px 0 0 var(--border);
+  --dv-active-sash-color: var(--primary);
+  --dv-tabs-container-scrollbar-color: var(--border);
+}
+/* harte Kanten statt weicher Übergänge */
+.slab-dock .dv-tabs-and-actions-container { border-bottom: 2px solid var(--border); }
+.slab-dock .dv-tab {
+  border-right: 2px solid var(--border);
+  font-family: var(--font-head), sans-serif;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: .04em;
+}
+.slab-dock .dv-tab.dv-active-tab { border-bottom: 2px solid var(--primary); }
+.slab-dock .dv-groupview { border: 2px solid var(--border); }
+.slab-dock .dv-resize-container {           /* abgekoppelte Fenster */
+  border: 2px solid var(--border);
+  box-shadow: 8px 8px 0 0 var(--border);
+  border-radius: 0;
+}
+.slab-dock .dv-sash.dv-active > .dv-sash-highlight { background: var(--primary); }
+
+/* ---- eingeklappte Bereiche ---- */
+.slab-dock .dv-groupview.slab-zu .dv-content-container { display: none; }
+/* seitlich eingeklappt: nur die Leiste bleibt, Titel steht hochkant */
+.slab-dock .dv-groupview.slab-zu-seitlich .dv-tabs-and-actions-container {
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  border-bottom: none;
+  border-right: 2px solid var(--border);
+}
+.slab-dock .dv-groupview.slab-zu-seitlich .dv-tabs-container { flex-direction: column; }
+.slab-dock .dv-groupview.slab-zu-seitlich .dv-default-tab-content {
+  writing-mode: vertical-rl;
+  padding: 6px 0;
+}
+.slab-dock .dv-groupview.slab-zu-seitlich .dv-tab { border-right: none; border-bottom: 2px solid var(--border); }
+.slab-dock .dv-groupview.slab-zu-seitlich .dv-void-container { flex: 1; }
+
+/* ---- abgekoppelte Fenster: gleicher Look wie der Rest, keine Fremdfarben ---- */
+.slab-dock {
+  --dv-floating-border: 2px solid var(--border);
+  --dv-floating-group-border: 2px solid var(--border);
+  --dv-floating-box-shadow: 8px 8px 0 0 var(--border);
+  --dv-floating-titlebar-height: 26px;
+  --dv-floating-titlebar-background-color: var(--card);
+  --dv-floating-titlebar-border-bottom: 2px solid var(--border);
+  --dv-floating-group-background-color: var(--card);
+}
+.slab-dock .dv-resize-container {
+  border-radius: 0;
+  background: var(--card);
+  /* nicht kleiner als bedienbar — sonst bekommt man das Fenster nicht mehr zu fassen */
+  min-width: 220px;
+  min-height: 140px;
+}
+.slab-dock .dv-resize-container .dv-tabs-and-actions-container { background: var(--card); }

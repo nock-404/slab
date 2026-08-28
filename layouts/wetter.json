@@ -1,0 +1,487 @@
+{
+  "v": 1,
+  "bg": "#0a0f16",
+  "w": 320,
+  "h": 240,
+  "pages": [
+    {
+      "id": "p1",
+      "widgets": [
+        {
+          "id": "wshhhjx",
+          "type": "dot",
+          "x": 10,
+          "y": 11,
+          "w": 40,
+          "h": 20,
+          "r": 4,
+          "color": "#22c55e",
+          "bind": {
+            "src": "wetter",
+            "path": "current.temperature_2m"
+          },
+          "thresholds": [
+            {
+              "from": -50,
+              "color": "#38bdf8"
+            },
+            {
+              "from": 18,
+              "color": "#22c55e"
+            },
+            {
+              "from": 28,
+              "color": "#f59e0b"
+            }
+          ]
+        },
+        {
+          "id": "wzxz2ud",
+          "type": "text",
+          "x": 22,
+          "y": 5,
+          "w": 140,
+          "h": 20,
+          "text": "Wetter",
+          "color": "#e8eef5",
+          "font": 4,
+          "vlw": "roboto-condensed-400-26"
+        },
+        {
+          "id": "wlqvbv9",
+          "type": "clock",
+          "x": 205,
+          "y": 9,
+          "w": 110,
+          "h": 20,
+          "format": "dd.MM. HH:mm",
+          "color": "#e8eef5",
+          "font": 4,
+          "align": "right",
+          "vlw": "roboto-condensed-400-22"
+        },
+        {
+          "id": "w8rj5f5",
+          "type": "line",
+          "x": 12,
+          "y": 43,
+          "w": 300,
+          "h": 1,
+          "color": "#1e2a38"
+        },
+        {
+          "id": "wt4e641",
+          "type": "weather",
+          "x": 8,
+          "y": 47,
+          "w": 72,
+          "h": 72,
+          "bind": {
+            "src": "wetter",
+            "path": "current.weather_code"
+          },
+          "color": "#e8eef5",
+          "track": "#8b98a8"
+        },
+        {
+          "id": "wj0d54i",
+          "type": "value",
+          "x": 90,
+          "y": 51,
+          "w": 130,
+          "h": 20,
+          "value": 0,
+          "suffix": "°",
+          "dec": 0,
+          "color": "#e8eef5",
+          "font": 6,
+          "align": "left",
+          "bind": {
+            "src": "wetter",
+            "path": "current.temperature_2m"
+          },
+          "vlw": "roboto-condensed-400-48"
+        },
+        {
+          "id": "wxkyx7g",
+          "type": "text",
+          "x": 92,
+          "y": 98,
+          "w": 90,
+          "h": 20,
+          "text": "gefühlt",
+          "color": "#8b98a8",
+          "font": 2,
+          "vlw": "roboto-condensed-400-16"
+        },
+        {
+          "id": "wvtnwec",
+          "type": "value",
+          "x": 160,
+          "y": 98,
+          "w": 48,
+          "h": 20,
+          "value": 0,
+          "suffix": "°",
+          "dec": 0,
+          "color": "#8b98a8",
+          "font": 2,
+          "align": "left",
+          "bind": {
+            "src": "wetter",
+            "path": "current.apparent_temperature"
+          },
+          "vlw": "roboto-condensed-400-16"
+        },
+        {
+          "id": "w9gu85c",
+          "type": "icon",
+          "x": 226,
+          "y": 54,
+          "w": 16,
+          "h": 16,
+          "icon": "tropfen",
+          "color": "#38bdf8"
+        },
+        {
+          "id": "w8lpl16",
+          "type": "value",
+          "x": 246,
+          "y": 53,
+          "w": 58,
+          "h": 20,
+          "value": 0,
+          "suffix": "%",
+          "dec": 0,
+          "color": "#e8eef5",
+          "font": 2,
+          "align": "left",
+          "bind": {
+            "src": "wetter",
+            "path": "current.relative_humidity_2m"
+          },
+          "vlw": "roboto-condensed-400-16"
+        },
+        {
+          "id": "w1gk36t",
+          "type": "icon",
+          "x": 226,
+          "y": 79,
+          "w": 16,
+          "h": 16,
+          "icon": "wind",
+          "color": "#3a79f8"
+        },
+        {
+          "id": "w1tqug8",
+          "type": "value",
+          "x": 246,
+          "y": 77,
+          "w": 58,
+          "h": 20,
+          "value": 0,
+          "suffix": "",
+          "dec": 0,
+          "color": "#e8eef5",
+          "font": 2,
+          "align": "left",
+          "bind": {
+            "src": "wetter",
+            "path": "current.wind_speed_10m"
+          },
+          "vlw": "roboto-condensed-400-16"
+        },
+        {
+          "id": "wvodnzs",
+          "type": "text",
+          "x": 247,
+          "y": 94,
+          "w": 58,
+          "h": 20,
+          "text": "km/h",
+          "color": "#8b98a8",
+          "font": 1,
+          "vlw": "roboto-condensed-400-8"
+        },
+        {
+          "id": "w12q28i",
+          "type": "line",
+          "x": 10,
+          "y": 124,
+          "w": 300,
+          "h": 1,
+          "color": "#1e2a38"
+        },
+        {
+          "id": "wr96v7w",
+          "type": "text",
+          "x": 14,
+          "y": 134,
+          "w": 68,
+          "h": 20,
+          "text": "Heute",
+          "color": "#8b98a8",
+          "font": 1,
+          "align": "center",
+          "vlw": "roboto-condensed-400-8"
+        },
+        {
+          "id": "wh8vufa",
+          "type": "weather",
+          "x": 32,
+          "y": 150,
+          "w": 32,
+          "h": 32,
+          "bind": {
+            "src": "wetter",
+            "path": "daily.weather_code[0]"
+          },
+          "color": "#e8eef5",
+          "track": "#8b98a8"
+        },
+        {
+          "id": "wqef3fz",
+          "type": "value",
+          "x": 15,
+          "y": 188,
+          "w": 68,
+          "h": 20,
+          "value": 0,
+          "suffix": "°",
+          "dec": 0,
+          "color": "#e8eef5",
+          "font": 4,
+          "align": "center",
+          "bind": {
+            "src": "wetter",
+            "path": "daily.temperature_2m_max[0]"
+          },
+          "vlw": "roboto-condensed-400-26"
+        },
+        {
+          "id": "w2pa1uz",
+          "type": "value",
+          "x": 12,
+          "y": 212,
+          "w": 68,
+          "h": 20,
+          "value": 0,
+          "suffix": "°",
+          "dec": 0,
+          "color": "#8b98a8",
+          "font": 2,
+          "align": "center",
+          "bind": {
+            "src": "wetter",
+            "path": "daily.temperature_2m_min[0]"
+          },
+          "vlw": "roboto-condensed-400-16"
+        },
+        {
+          "id": "wsy7s95",
+          "type": "text",
+          "x": 90,
+          "y": 134,
+          "w": 68,
+          "h": 20,
+          "text": "Morgen",
+          "color": "#8b98a8",
+          "font": 1,
+          "align": "center",
+          "vlw": "roboto-condensed-400-8"
+        },
+        {
+          "id": "wxlwrsc",
+          "type": "weather",
+          "x": 108,
+          "y": 150,
+          "w": 32,
+          "h": 32,
+          "bind": {
+            "src": "wetter",
+            "path": "daily.weather_code[1]"
+          },
+          "color": "#e8eef5",
+          "track": "#8b98a8"
+        },
+        {
+          "id": "w800xwb",
+          "type": "value",
+          "x": 91,
+          "y": 188,
+          "w": 68,
+          "h": 20,
+          "value": 0,
+          "suffix": "°",
+          "dec": 0,
+          "color": "#e8eef5",
+          "font": 4,
+          "align": "center",
+          "bind": {
+            "src": "wetter",
+            "path": "daily.temperature_2m_max[1]"
+          },
+          "vlw": "roboto-condensed-400-26"
+        },
+        {
+          "id": "wv2or1l",
+          "type": "value",
+          "x": 88,
+          "y": 212,
+          "w": 68,
+          "h": 20,
+          "value": 0,
+          "suffix": "°",
+          "dec": 0,
+          "color": "#8b98a8",
+          "font": 2,
+          "align": "center",
+          "bind": {
+            "src": "wetter",
+            "path": "daily.temperature_2m_min[1]"
+          },
+          "vlw": "roboto-condensed-400-16"
+        },
+        {
+          "id": "we9fjre",
+          "type": "text",
+          "x": 166,
+          "y": 134,
+          "w": 68,
+          "h": 20,
+          "text": "Übermorgen",
+          "color": "#8b98a8",
+          "font": 2,
+          "align": "center",
+          "vlw": "roboto-condensed-400-8"
+        },
+        {
+          "id": "whh5bg1",
+          "type": "weather",
+          "x": 184,
+          "y": 150,
+          "w": 32,
+          "h": 32,
+          "bind": {
+            "src": "wetter",
+            "path": "daily.weather_code[2]"
+          },
+          "color": "#e8eef5",
+          "track": "#8b98a8"
+        },
+        {
+          "id": "wrtepyr",
+          "type": "value",
+          "x": 167,
+          "y": 188,
+          "w": 68,
+          "h": 20,
+          "value": 0,
+          "suffix": "°",
+          "dec": 0,
+          "color": "#e8eef5",
+          "font": 4,
+          "align": "center",
+          "bind": {
+            "src": "wetter",
+            "path": "daily.temperature_2m_max[2]"
+          },
+          "vlw": "roboto-condensed-400-26"
+        },
+        {
+          "id": "wp09u1e",
+          "type": "value",
+          "x": 164,
+          "y": 212,
+          "w": 68,
+          "h": 20,
+          "value": 0,
+          "suffix": "°",
+          "dec": 0,
+          "color": "#8b98a8",
+          "font": 2,
+          "align": "center",
+          "bind": {
+            "src": "wetter",
+            "path": "daily.temperature_2m_min[2]"
+          },
+          "vlw": "roboto-condensed-400-16"
+        },
+        {
+          "id": "w77gmf5",
+          "type": "text",
+          "x": 242,
+          "y": 134,
+          "w": 68,
+          "h": 20,
+          "text": "Danach",
+          "color": "#8b98a8",
+          "font": 1,
+          "align": "center",
+          "vlw": "roboto-condensed-400-8"
+        },
+        {
+          "id": "wq3rq94",
+          "type": "weather",
+          "x": 260,
+          "y": 150,
+          "w": 32,
+          "h": 32,
+          "bind": {
+            "src": "wetter",
+            "path": "daily.weather_code[3]"
+          },
+          "color": "#e8eef5",
+          "track": "#8b98a8"
+        },
+        {
+          "id": "w8k7tje",
+          "type": "value",
+          "x": 243,
+          "y": 188,
+          "w": 68,
+          "h": 20,
+          "value": 0,
+          "suffix": "°",
+          "dec": 0,
+          "color": "#e8eef5",
+          "font": 4,
+          "align": "center",
+          "bind": {
+            "src": "wetter",
+            "path": "daily.temperature_2m_max[3]"
+          },
+          "vlw": "roboto-condensed-400-26"
+        },
+        {
+          "id": "wclm45w",
+          "type": "value",
+          "x": 240,
+          "y": 212,
+          "w": 68,
+          "h": 20,
+          "value": 0,
+          "suffix": "°",
+          "dec": 0,
+          "color": "#8b98a8",
+          "font": 2,
+          "align": "center",
+          "bind": {
+            "src": "wetter",
+            "path": "daily.temperature_2m_min[3]"
+          },
+          "vlw": "roboto-condensed-400-16"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "wetter",
+      "name": "Open-Meteo Wetter",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Europe%2FBerlin&forecast_days=4",
+      "method": "GET",
+      "interval": 900000
+    }
+  ]
+}

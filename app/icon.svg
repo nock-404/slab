@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- SLAB — eine Platte, isometrisch: leuchtende Oberseite, sichtbare Tiefe, harte Kanten -->
+  <!-- Tiefe: linke Flanke -->
+  <path d="M6 20 L32 34 L32 56 L6 42 Z" fill="#1a1a1a" stroke="#000" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Tiefe: rechte Flanke -->
+  <path d="M58 20 L32 34 L32 56 L58 42 Z" fill="#0d0d0d" stroke="#000" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Oberseite: der Bildschirm -->
+  <path d="M32 6 L58 20 L32 34 L6 20 Z" fill="#ffdc58" stroke="#000" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Inhalt auf der Oberseite: Statuspunkt und zwei Balken, in der Flucht der Platte -->
+  <path d="M20 20 L26 17 L30 19 L24 22 Z" fill="#000"/>
+  <path d="M33 15 L44 21 L41 23 L30 17 Z" fill="#000"/>
+  <path d="M26 25 L37 31 L34 33 L23 27 Z" fill="#000"/>
+</svg>
