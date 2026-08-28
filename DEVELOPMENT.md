@@ -1,4 +1,4 @@
-# Entwicklung
+# Development
 
 ## Editor
 
@@ -8,124 +8,124 @@ pnpm dev          # http://localhost:3000
 pnpm lint
 ```
 
-Chrome oder Edge — WebSerial gibt es sonst nirgends.
+Chrome or Edge — WebSerial exists nowhere else.
 
-Layouts liegen als JSON-Dateien unter `layouts/`. Das ist git-freundlich und
-spart eine Datenbank; der Editor speichert automatisch mit Verzögerung.
+Layouts are stored as JSON files under `layouts/`. That's git-friendly and saves
+a database; the editor autosaves with a debounce.
 
 ## Firmware
 
-Quelltext unter `firmware/`, gebaut mit [PlatformIO](https://platformio.org/):
+Source under `firmware/`, built with [PlatformIO](https://platformio.org/):
 
 ```bash
 cd firmware
-pio run                      # baut .pio/build/cyd/firmware.bin
-pio run -t upload            # direkt aufs Gerät
-pio device monitor           # Serielle Ausgabe, 115200 Baud
+pio run                      # builds .pio/build/cyd/firmware.bin
+pio run -t upload            # straight to the device
+pio device monitor           # serial output, 115200 baud
 ```
 
-Damit auch der **Flash-Knopf im Editor** funktioniert, muss die gebaute
-Firmware unter `public/firmware/slab.bin` liegen:
+For the **flash button in the editor** to work, the built firmware has to sit at
+`public/firmware/slab.bin`:
 
 ```bash
 cp firmware/.pio/build/cyd/firmware.bin public/firmware/slab.bin
 ```
 
-Diese Datei ist bewusst nicht eingecheckt — ein kompiliertes Binary enthält die
-Build-Pfade der Maschine, auf der es entstanden ist.
+That file is deliberately not committed — a compiled binary embeds the build
+paths of the machine it was made on.
 
-## Wie Editor und Gerät reden
+## How editor and device talk
 
-Serielle Verbindung, 115200 Baud. Ein Rahmen ist `STX <json> ETX`.
+Serial, 115200 baud. A frame is `STX <json> ETX`.
 
-| Kommando | Wirkung |
+| Command | Effect |
 |---|---|
-| `{ "pages": [...] }` | Layout — wird gespeichert und gezeichnet. Antwort `OK <bytes>` |
-| `{ "_wifi": { "ssid", "pass" } }` | WLAN in NVS ablegen und verbinden |
-| `{ "_status": true }` | WLAN, IP, Seitenzahl, Kalibrierung, freier Speicher |
-| `{ "_fonts": true }` | Welche `.vlw`/`.565` liegen auf dem Gerät |
-| `{ "_font": { name, ext, len, sum } }` | Datei ankündigen, danach folgen `len` Rohbytes |
-| `{ "_delfont": "<name>" }` | Datei löschen |
-| `{ "_calibrate": true }` | Touch-Kalibrierung, drei Kreuze antippen |
-| `{ "_touchtest": true }` | 12 Sekunden Rohwerte des Sensors |
+| `{ "pages": [...] }` | Layout — stored and drawn. Replies `OK <bytes>` |
+| `{ "_wifi": { "ssid", "pass" } }` | Store Wi-Fi in NVS and connect |
+| `{ "_status": true }` | Wi-Fi, IP, page count, calibration, free space |
+| `{ "_fonts": true }` | Which `.vlw` / `.565` files are on the device |
+| `{ "_font": { name, ext, len, sum } }` | Announce a file; `len` raw bytes follow |
+| `{ "_delfont": "<name>" }` | Delete a file |
+| `{ "_calibrate": true }` | Touch calibration, tap three crosses |
+| `{ "_touchtest": true }` | 12 seconds of raw sensor values |
 
-Dateien gehen **blockweise mit Bestätigung**: das Gerät meldet `ACK <bisher>
-<gesamt>`, erst danach geht der nächste Block raus. Dadurch regelt sich das
-Tempo von selbst — kein geratener Wartewert, kein Pufferüberlauf. Eine
-Prüfsumme wandert mit; stimmt sie nicht, verwirft das Gerät die Datei. Genau so
-entstehen sonst zerhackte Schriften.
+Files transfer **block by block with acknowledgement**: the device reports
+`ACK <sofar> <total>`, and only then does the next block go out. That makes the
+pace self-regulating — no guessed delay, no buffer overrun. A checksum travels
+along; if it doesn't match, the device discards the file. That is exactly how
+you otherwise end up with mangled fonts.
 
-Das Layout selbst darf höchstens **24000 Bytes** groß sein — das ist der
-Empfangspuffer der Firmware. Der Editor warnt ab 80 Prozent.
+The layout itself may be at most **24,000 bytes** — that's the firmware's
+receive buffer. The editor warns from 80 percent.
 
-## Aufbau
-
-```
-app/page.tsx           der ganze Editor
-app/lib/types.ts       Layout-Vertrag — muss 1:1 zur Firmware passen
-app/lib/serial.ts      WebSerial-Verbindung, Rahmen, blockweiser Dateiversand
-app/lib/flash.ts       Firmware flashen über esptool-js
-app/lib/vlw.ts         .vlw-Schriften aus TTF/OTF erzeugen
-app/lib/bilder.ts      Bilder und QR-Codes nach RGB565
-app/lib/meteocons.ts   Wettersymbole einfrieren und als Film zerlegen
-app/lib/validate.ts    Layout gegen alles prüfen, was auf dem Gerät schiefgeht
-app/api/proxy          Datenquellen serverseitig holen (CORS + Auth-Header)
-firmware/src/main.cpp  Interpreter-Firmware
-```
-
-### Der Layout-Vertrag
-
-`app/lib/types.ts` und `firmware/src/main.cpp` beschreiben dasselbe Format.
-Wer einen Feldtyp ergänzt, muss ihn an **beiden** Stellen eintragen — der
-Editor zeichnet die Vorschau, die Firmware das Echte.
-
-Die Firmware ignoriert Unbekanntes. Ein neuer Feldtyp macht ein altes Gerät
-also nicht kaputt, er wird nur nicht gezeichnet.
-
-### .vlw-Schriften
-
-Format laut `TFT_eSPI/Extensions/Smooth_font.cpp`, alle Zahlen 32 Bit **Big
-Endian**:
+## Structure
 
 ```
-Kopf, 24 B:   gCount | version(11) | fontSize | 0 | ascent | descent
-je Glyph, 28: unicode | height | width | gxAdvance | dY | dX | 0
-danach:       Bitmaps, je Pixel 1 Byte Alpha
-Abschluss:    1 B Namenslänge + Name, dasselbe als PS-Name, 1 B geglättet(1)
+app/page.tsx           the entire editor
+app/lib/types.ts       layout contract — must match the firmware 1:1
+app/lib/serial.ts      WebSerial link, framing, block-wise file transfer
+app/lib/flash.ts       firmware flashing via esptool-js
+app/lib/vlw.ts         build .vlw fonts from TTF/OTF
+app/lib/bilder.ts      images and QR codes to RGB565
+app/lib/meteocons.ts   freeze weather icons and split them into frames
+app/lib/validate.ts    check a layout against everything that fails on device
+app/api/proxy          fetch data sources server-side (CORS + auth headers)
+firmware/src/main.cpp  interpreter firmware
 ```
 
-`ascent` muss **jedes** Zeichen einschließen: TFT_eSPI setzt die Oberkante auf
-`cursorY + ascent - dY`. Wäre `ascent` kleiner als das größte `dY`, würde oben
-abgeschnitten. `readVlw()` liest die Datei genauso ein wie die Library — zum
-Gegenprüfen des Writers.
+### The layout contract
 
-### Wettersymbole
+`app/lib/types.ts` and `firmware/src/main.cpp` describe the same format. Adding
+a field type means adding it in **both** places — the editor draws the preview,
+the firmware draws the real thing.
 
-Die Meteocons bringen SMIL-Animationen mit. Ein serialisiertes SVG behält davon
-nur die Anweisungen, nicht den Stand — deshalb wird das Bild kurz in die Seite
-gehängt, die Uhr angehalten und der erreichte Wert jedes bewegten Attributs fest
-eingetragen.
+The firmware ignores anything it doesn't know. A new field type therefore won't
+break an old device; it just won't be drawn.
 
-Trifft eine schnelle Bewegung auf eine langsame — beim Gewitter blitzt es alle
-zwei Sekunden, während die Sonne 45 Sekunden für eine Umdrehung braucht — gibt
-die schnelle den Takt vor und die langsame wird angehalten. Bewegt sich alles
-nur langsam, wird nachgemessen, nach welchem Abschnitt das Symbol wieder gleich
-aussieht: Bild für Bild verglichen, statt es zu raten.
+### .vlw fonts
 
-## UI-Skripte
+Format per `TFT_eSPI/Extensions/Smooth_font.cpp`, all integers 32-bit **big
+endian**:
 
-Playwright-Skripte, die den Editor durchklicken. Sie legen ein
-Wegwerf-Template an und räumen es wieder weg — echte Layouts werden nie
-angefasst. Der Dev-Server muss laufen.
+```
+header, 24 B:  gCount | version(11) | fontSize | 0 | ascent | descent
+per glyph, 28: unicode | height | width | gxAdvance | dY | dX | 0
+then:          bitmaps, one alpha byte per pixel
+trailer:       1 B name length + name, same again as PS name, 1 B smooth(1)
+```
+
+`ascent` must cover **every** glyph: TFT_eSPI places the top edge at
+`cursorY + ascent - dY`. If `ascent` were smaller than the largest `dY`, glyphs
+would be clipped at the top. `readVlw()` parses the file exactly the way the
+library does — to check the writer against itself.
+
+### Weather icons
+
+The Meteocons ship with SMIL animations. A serialised SVG keeps only the
+instructions, not the state — so the image is briefly attached to the page, the
+clock is paused, and the reached value of every animated attribute is written
+out as a static one.
+
+When a fast animation meets a slow one — a thunderstorm flashes every two
+seconds while the sun takes 45 seconds for a full turn — the fast one sets the
+tempo and the slow one is frozen. If everything moves slowly, the loop point is
+measured instead of guessed: frames are rendered and compared until the icon
+looks like its first frame again.
+
+## UI scripts
+
+Playwright scripts that click through the editor. They create a throwaway
+template and clean it up afterwards — real layouts are never touched. The dev
+server has to be running.
 
 ```bash
-node test-ui.mjs      # Klickt die Kernfunktionen durch
-node xcheck.mjs       # Prüft jeden Dialog auf Überlauf und native Scrollbalken
-node shots.mjs        # Screenshots nach /tmp
+node test-ui.mjs      # clicks through the core features
+node xcheck.mjs       # checks every dialog for overflow and native scrollbars
+node shots.mjs        # screenshots to /tmp
 ```
 
-## Regeln im Code
+## House rules in the code
 
-- **Nirgends native Scrollbalken** — alles Scrollbare läuft über OverlayScrollbars.
-- **Kein `window.confirm`/`alert`** — Rückfragen über die eigene Dialog-Komponente.
-- **Keine Farbe hartkodiert** in Komponenten; alles über die Tokens in `app/globals.css`.
+- **No native scrollbars anywhere** — everything scrollable goes through OverlayScrollbars.
+- **No `window.confirm`/`alert`** — prompts use the project's own dialog component.
+- **No hardcoded colours** in components; everything through the tokens in `app/globals.css`.
